@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: velhobol-final
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: FINAL_ADMIN_KEY
+        sync: false
