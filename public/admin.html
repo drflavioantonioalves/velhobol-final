@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Velhobol — Painel da Final</title>
+<style>
+  :root { --bg:#0b1a12; --card:#12261b; --line:#1f3a2a; --txt:#f2f7f3; --mut:#8fa99a; --green:#22c55e; --yellow:#facc15; --blue:#3b82f6; --red:#ef4444; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  .wrap { max-width:640px; margin:0 auto; padding:14px; }
+  h1 { font-size:20px; margin:0 0 4px; } h1 span { color:var(--green); }
+  h2 { font-size:15px; margin:0 0 10px; color:var(--mut); text-transform:uppercase; letter-spacing:1px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-top:14px; }
+  label { display:block; font-size:13px; color:var(--mut); margin:10px 0 4px; }
+  input[type=text], input[type=password], input[type=number] { width:100%; padding:12px; font-size:16px; border-radius:10px; border:1px solid var(--line); background:#0b1a12; color:var(--txt); }
+  button { font-size:16px; font-weight:700; padding:13px 14px; border-radius:10px; border:0; background:var(--green); color:#04210f; cursor:pointer; }
+  button.sec { background:#223d2e; color:var(--txt); } button.warn { background:#7f1d1d; color:#fff; }
+  button.sm { font-size:13px; padding:6px 10px; } button:disabled { opacity:.4; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .full { width:100%; margin-top:10px; }
+  .opt { position:relative; }
+  .opt input { position:absolute; opacity:0; inset:0; }
+  .opt span { display:block; text-align:center; padding:12px 6px; border-radius:10px; border:2px solid var(--line); background:#0b1a12; font-weight:600; word-break:break-word; }
+  .opt input:checked + span { border-color:var(--green); background:#143323; }
+  .opt.amarelo input:checked + span { border-color:var(--yellow); } .opt.azul input:checked + span { border-color:var(--blue); } .opt.vermelho input:checked + span { border-color:var(--red); }
+  .st { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .big { font-size:28px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .evrow { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 0; border-top:1px solid var(--line); font-size:14px; }
+  .evrow:first-child { border-top:0; }
+  #toast { position:fixed; left:12px; right:12px; bottom:14px; max-width:616px; margin:0 auto; padding:12px; border-radius:10px; font-weight:600; display:none; text-align:center; z-index:9; }
+  #toast.ok { background:#14532d; } #toast.err { background:#7f1d1d; }
+  a { color:var(--green); } .hide { display:none; } .mut { color:var(--mut); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Velho<span>bol</span> — Painel da Final</h1>
+  <div class="mut"><a href="/" target="_blank">Abrir página pública</a></div>
+
+  <!-- LOGIN -->
+  <div class="card" id="login">
+    <h2>Entrar</h2>
+    <label for="key">Chave de administrador</label>
+    <input type="password" id="key" autocomplete="current-password">
+    <button class="full" id="btnLogin">Entrar</button>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="panel" class="hide">
+    <div class="card">
+      <div class="st">
+        <div><div class="mut" id="stLabel">—</div><div class="big" id="stScore">0 x 0</div></div>
+        <div class="big" id="stClock">00:00</div>
+      </div>
+      <div class="grid">
+        <button class="full" data-a="start_first">▶ Iniciar 1º tempo</button>
+        <button class="full sec" data-a="halftime">⏸ Intervalo</button>
+        <button class="full" data-a="start_second">▶ Iniciar 2º tempo</button>
+        <button class="full warn" data-a="finish" data-confirm="Encerrar a partida?">⏹ Encerrar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>⚽ Registrar gol</h2>
+      <div class="grid">
+        <label class="opt"><input type="radio" name="goalTeam" value="home"><span class="tn" data-t="home">Casa</span></label>
+        <label class="opt"><input type="radio" name="goalTeam" value="away"><span class="tn" data-t="away">Visitante</span></label>
+      </div>
+      <label for="goalPlayer">Jogador</label>
+      <input type="text" id="goalPlayer" maxlength="40" placeholder="Nome do jogador">
+      <label><input type="checkbox" id="goalOwn"> Gol contra (o jogador acima é do time adversário)</label>
+      <button class="full" id="btnGoal">Registrar gol</button>
+    </div>
+
+    <div class="card">
+      <h2>🟨 Registrar cartão</h2>
+      <div class="grid">
+        <label class="opt"><input type="radio" name="cardTeam" value="home"><span class="tn" data-t="home">Casa</span></label>
+        <label class="opt"><input type="radio" name="cardTeam" value="away"><span class="tn" data-t="away">Visitante</span></label>
+      </div>
+      <label>Cartão</label>
+      <div class="grid3">
+        <label class="opt amarelo"><input type="radio" name="cardColor" value="amarelo" checked><span>Amarelo</span></label>
+        <label class="opt azul"><input type="radio" name="cardColor" value="azul"><span>Azul</span></label>
+        <label class="opt vermelho"><input type="radio" name="cardColor" value="vermelho"><span>Vermelho</span></label>
+      </div>
+      <label for="cardPlayer">Jogador</label>
+      <input type="text" id="cardPlayer" maxlength="40" placeholder="Nome do jogador">
+      <button class="full" id="btnCard">Registrar cartão</button>
+    </div>
+
+    <div class="card">
+      <h2>💬 Lance a lance (texto livre)</h2>
+      <input type="text" id="noteText" maxlength="200" placeholder="Ex.: Trave! Quase o gol…">
+      <button class="full sec" id="btnNote">Publicar lance</button>
+    </div>
+
+    <div class="card">
+      <h2>Lances registrados</h2>
+      <div id="evlist" class="mut">Nenhum lance ainda.</div>
+    </div>
+
+    <div class="card">
+      <h2>Configuração da partida</h2>
+      <label for="cfgHome">Time da casa</label><input type="text" id="cfgHome" maxlength="30">
+      <label for="cfgAway">Time visitante</label><input type="text" id="cfgAway" maxlength="30">
+      <label for="cfgVenue">Campo / estádio</label><input type="text" id="cfgVenue" maxlength="60">
+      <label for="cfgHalf">Duração de cada tempo (minutos)</label><input type="number" id="cfgHalf" min="1" max="60">
+      <button class="full" id="btnSetup">Salvar configuração</button>
+    </div>
+
+    <div class="card">
+      <h2>Ajustes de emergência</h2>
+      <label>Corrigir relógio (só com a bola rolando)</label>
+      <div class="grid">
+        <input type="number" id="adjMin" min="0" max="180" placeholder="minutos">
+        <input type="number" id="adjSec" min="0" max="59" placeholder="segundos">
+      </div>
+      <button class="full sec" id="btnAdj">Ajustar relógio</button>
+      <button class="full warn" id="btnReset">Reiniciar partida (apaga placar e lances)</button>
+      <button class="full sec" id="btnLogout">Sair</button>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = '';
+  try { KEY = localStorage.getItem('finalAdminKey') || ''; } catch (e) {}
+  var S = null, receivedAt = 0, cfgFilled = false, socket = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function toast(msg, ok) {
+    var t = $('toast'); t.textContent = msg; t.className = ok ? 'ok' : 'err'; t.style.display = 'block';
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.style.display = 'none'; }, 3000);
+  }
+
+  function api(body) {
+    return fetch('/api/final/control', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-final-admin-key': KEY },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().then(function (j) {
+        if (r.status === 401) { showLogin(); }
+        if (!j.ok) throw new Error(j.error || 'Erro');
+        return j;
+      });
+    });
+  }
+
+  function act(body, okMsg) {
+    return api(body).then(function (j) { toast(okMsg || 'Feito!', true); if (j.state) apply(j.state); return j; })
+      .catch(function (e) { toast(e.message, false); throw e; });
+  }
+
+  function showLogin() { $('login').classList.remove('hide'); $('panel').classList.add('hide'); }
+  function showPanel() { $('login').classList.add('hide'); $('panel').classList.remove('hide'); }
+
+  function login() {
+    KEY = $('key').value.trim() || KEY;
+    api({ action: 'ping' }).then(function () {
+      try { localStorage.setItem('finalAdminKey', KEY); } catch (e) {}
+      showPanel(); start();
+    }).catch(function (e) { toast(e.message, false); });
+  }
+
+  function seconds() {
+    if (!S) return 0;
+    var t = S.clock.seconds;
+    if (S.clock.running) t += Math.floor((Date.now() - receivedAt) / 1000);
+    return t;
+  }
+  function renderClock() { var t = seconds(); $('stClock').textContent = pad(Math.floor(t / 60)) + ':' + pad(t % 60); }
+
+  function apply(s) {
+    S = s; receivedAt = Date.now();
+    $('stLabel').textContent = s.teams.home + ' x ' + s.teams.away + ' · ' + s.statusLabel;
+    $('stScore').textContent = s.score.home + ' x ' + s.score.away;
+    document.querySelectorAll('.tn').forEach(function (el) { el.textContent = s.teams[el.dataset.t]; });
+    if (!cfgFilled) {
+      $('cfgHome').value = s.teams.home; $('cfgAway').value = s.teams.away;
+      $('cfgVenue').value = s.venue; $('cfgHalf').value = s.halfLengthMin; cfgFilled = true;
+    }
+    // habilita só os botões válidos para a fase atual
+    var ok = { start_first: s.status === 'pre', halftime: s.status === 'first', start_second: s.status === 'halftime',
+      finish: s.status === 'first' || s.status === 'halftime' || s.status === 'second' };
+    document.querySelectorAll('[data-a]').forEach(function (b) { b.disabled = !ok[b.dataset.a]; });
+
+    var list = s.events.slice().reverse();
+    $('evlist').innerHTML = list.length ? list.map(function (e) {
+      var d = e.type === 'goal' ? '⚽ Gol ' + esc(s.teams[e.team]) + (e.player ? ' — ' + esc(e.player) : '') + (e.ownGoal ? ' (contra)' : '')
+        : e.type === 'card' ? 'Cartão ' + e.color + ' ' + esc(s.teams[e.team]) + (e.player ? ' — ' + esc(e.player) : '')
+        : esc(e.text);
+      var del = e.type === 'status' ? '' : '<button class="sec sm" data-del="' + e.id + '">Apagar</button>';
+      return '<div class="evrow"><div>' + e.minute + "' · " + d + '</div>' + del + '</div>';
+    }).join('') : 'Nenhum lance ainda.';
+    renderClock();
+  }
+
+  function radio(name) { var r = document.querySelector('input[name=' + name + ']:checked'); return r ? r.value : null; }
+
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button'); if (!b) return;
+    if (b.dataset.a) {
+      if (b.dataset.confirm && !confirm(b.dataset.confirm)) return;
+      act({ action: b.dataset.a }, 'Feito!').catch(function () {});
+    }
+    if (b.dataset.del && confirm('Apagar este lance?')) act({ action: 'delete_event', id: Number(b.dataset.del) }, 'Lance apagado.').catch(function () {});
+  });
+
+  $('btnLogin').onclick = login;
+  $('key').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
+
+  $('btnGoal').onclick = function () {
+    act({ action: 'goal', team: radio('goalTeam'), player: $('goalPlayer').value, ownGoal: $('goalOwn').checked }, 'Gol registrado!')
+      .then(function () { $('goalPlayer').value = ''; $('goalOwn').checked = false; }).catch(function () {});
+  };
+  $('btnCard').onclick = function () {
+    act({ action: 'card', team: radio('cardTeam'), color: radio('cardColor'), player: $('cardPlayer').value }, 'Cartão registrado!')
+      .then(function () { $('cardPlayer').value = ''; }).catch(function () {});
+  };
+  $('btnNote').onclick = function () {
+    act({ action: 'note', text: $('noteText').value }, 'Lance publicado!').then(function () { $('noteText').value = ''; }).catch(function () {});
+  };
+  $('btnSetup').onclick = function () {
+    act({ action: 'setup', homeName: $('cfgHome').value, awayName: $('cfgAway').value, venue: $('cfgVenue').value, halfLengthMin: $('cfgHalf').value }, 'Configuração salva!').catch(function () {});
+  };
+  $('btnAdj').onclick = function () {
+    act({ action: 'adjust_clock', minutes: $('adjMin').value, seconds: $('adjSec').value || 0 }, 'Relógio ajustado.').catch(function () {});
+  };
+  $('btnReset').onclick = function () {
+    if (confirm('Isso apaga placar e todos os lances. Tem certeza?')) act({ action: 'reset' }, 'Partida reiniciada.').catch(function () {});
+  };
+  $('btnLogout').onclick = function () { try { localStorage.removeItem('finalAdminKey'); } catch (e) {} KEY = ''; location.reload(); };
+
+  function start() {
+    if (socket) return;
+    socket = io(); // sem role "viewer": o painel não conta como espectador
+    socket.on('state', apply);
+    setInterval(renderClock, 500);
+  }
+
+  if (KEY) { api({ action: 'ping' }).then(function () { showPanel(); start(); }).catch(function () { showLogin(); }); }
+})();
+</script>
+</body>
+</html>

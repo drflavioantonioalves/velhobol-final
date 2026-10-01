@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Velhobol — Final ao vivo</title>
+<style>
+  :root {
+    --bg:#0b1a12; --card:#12261b; --line:#1f3a2a; --txt:#f2f7f3; --mut:#8fa99a;
+    --green:#22c55e; --yellow:#facc15; --blue:#3b82f6; --red:#ef4444;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  .wrap { max-width:720px; margin:0 auto; padding:14px; }
+  header { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px; }
+  .brand { font-weight:800; font-size:22px; letter-spacing:.5px; }
+  .brand span { color:var(--green); }
+  .live { font-size:12px; font-weight:700; padding:5px 10px; border-radius:99px; background:#2a1212; color:#fca5a5; display:flex; align-items:center; gap:6px; }
+  .live i { width:8px; height:8px; border-radius:50%; background:var(--red); animation:blink 1.2s infinite; }
+  .live.off { background:#1a2a20; color:var(--mut); } .live.off i { background:var(--mut); animation:none; }
+  @keyframes blink { 50% { opacity:.25; } }
+  h1 { font-size:14px; font-weight:600; color:var(--mut); text-transform:uppercase; letter-spacing:1.5px; margin:0 0 10px; }
+  .board { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; }
+  .teams { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:center; text-align:center; }
+  .team { font-size:clamp(15px,4.6vw,24px); font-weight:700; word-break:break-word; }
+  .score { font-size:clamp(40px,14vw,72px); font-weight:800; font-variant-numeric:tabular-nums; line-height:1; white-space:nowrap; }
+  .score.pulse { animation:pulse .8s; }
+  @keyframes pulse { 30% { transform:scale(1.25); color:var(--green); } }
+  .meta { display:flex; justify-content:center; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+  .clock { font-size:30px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .clock small { font-size:14px; color:var(--yellow); }
+  .pill { font-size:13px; font-weight:700; padding:6px 12px; border-radius:99px; background:#1a3326; color:var(--green); }
+  .pill.finished { background:#33261a; color:#fdba74; } .pill.halftime { background:#332f1a; color:var(--yellow); } .pill.pre { background:#1f2a33; color:#93c5fd; }
+  .venue { margin-top:14px; border-radius:12px; overflow:hidden; position:relative; background:#14532d; }
+  .venue svg { display:block; width:100%; height:auto; }
+  .venue .name { position:absolute; left:0; right:0; bottom:8px; text-align:center; font-size:13px; font-weight:600; text-shadow:0 1px 3px #000; }
+  .row { display:flex; justify-content:space-between; gap:10px; margin-top:12px; color:var(--mut); font-size:13px; flex-wrap:wrap; }
+  .cardsum { display:flex; gap:10px; align-items:center; }
+  .c { display:inline-block; width:10px; height:14px; border-radius:2px; vertical-align:-2px; margin-right:3px; }
+  .c.amarelo { background:var(--yellow); } .c.azul { background:var(--blue); } .c.vermelho { background:var(--red); }
+  h2 { font-size:16px; margin:22px 0 10px; }
+  .feed { display:flex; flex-direction:column; gap:8px; }
+  .ev { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--line); border-radius:10px; padding:10px 12px; display:flex; gap:12px; align-items:flex-start; animation:in .4s; }
+  @keyframes in { from { opacity:0; transform:translateY(-6px); } }
+  .ev .min { font-weight:700; color:var(--mut); min-width:38px; font-variant-numeric:tabular-nums; }
+  .ev .tx b { display:block; }
+  .ev .tx span { color:var(--mut); font-size:13px; }
+  .ev.goal { border-left-color:var(--green); } .ev.amarelo { border-left-color:var(--yellow); }
+  .ev.azul { border-left-color:var(--blue); } .ev.vermelho { border-left-color:var(--red); }
+  .empty { color:var(--mut); text-align:center; padding:20px; }
+  .sponsor { margin-top:22px; border:1px dashed var(--line); border-radius:12px; padding:22px; text-align:center; color:var(--mut); font-size:13px; }
+  footer { margin:22px 0 8px; text-align:center; font-size:12px; color:var(--mut); }
+  footer a { color:var(--mut); }
+  #conn { display:none; background:#3b2a0a; color:var(--yellow); text-align:center; font-size:13px; padding:6px; }
+</style>
+</head>
+<body>
+<div id="conn">Reconectando…</div>
+<div class="wrap">
+  <header>
+    <div class="brand">Velho<span>bol</span></div>
+    <div class="live" id="live"><i></i><span id="liveTxt">AO VIVO</span></div>
+  </header>
+
+  <h1>Final do Campeonato Velhobol — ao vivo</h1>
+
+  <section class="board">
+    <div class="teams">
+      <div class="team" id="home">—</div>
+      <div class="score" id="score">0 x 0</div>
+      <div class="team" id="away">—</div>
+    </div>
+    <div class="meta">
+      <div class="clock" id="clock">00:00</div>
+      <div class="pill" id="status">Pré-jogo</div>
+    </div>
+
+    <div class="venue">
+      <svg viewBox="0 0 300 130" aria-hidden="true">
+        <rect width="300" height="130" fill="#15803d"/>
+        <g fill="none" stroke="#ffffffaa" stroke-width="1.5">
+          <rect x="10" y="8" width="280" height="114"/>
+          <line x1="150" y1="8" x2="150" y2="122"/>
+          <circle cx="150" cy="65" r="18"/>
+          <rect x="10" y="38" width="30" height="54"/>
+          <rect x="260" y="38" width="30" height="54"/>
+        </g>
+      </svg>
+      <div class="name" id="venue">—</div>
+    </div>
+
+    <div class="row">
+      <div>👥 <b id="viewers">0</b> online agora</div>
+      <div class="cardsum" id="cardsum"></div>
+    </div>
+  </section>
+
+  <h2>Lance a lance</h2>
+  <div class="feed" id="feed"><div class="empty">A partida ainda não começou.</div></div>
+
+  <div class="sponsor">Espaço reservado para patrocinador</div>
+
+  <footer>Velhobol · <a href="/admin">Painel administrativo</a></footer>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var S = null, receivedAt = 0, lastScore = '';
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function mmss(t) { return pad(Math.floor(t / 60)) + ':' + pad(t % 60); }
+
+  function seconds() {
+    if (!S) return 0;
+    var t = S.clock.seconds;
+    if (S.clock.running) t += Math.floor((Date.now() - receivedAt) / 1000);
+    return t;
+  }
+
+  function renderClock() {
+    if (!S) return;
+    var t = seconds(), hl = S.halfLengthMin * 60, html = mmss(t);
+    var limit = S.status === 'first' ? hl : (S.status === 'second' ? hl * 2 : 0);
+    if (limit && t > limit) html = mmss(limit) + ' <small>+' + mmss(t - limit) + '</small>';
+    $('clock').innerHTML = html;
+  }
+
+  function evHtml(e) {
+    var team = e.team ? S.teams[e.team] : '';
+    var who = e.player ? esc(e.player) : '';
+    var title = '', sub = '', cls = e.type;
+    if (e.type === 'goal') {
+      title = '⚽ GOL! ' + esc(team);
+      sub = e.ownGoal ? 'Gol contra' + (who ? ' de ' + who : '') : (who ? 'Gol de ' + who : '');
+    } else if (e.type === 'card') {
+      cls = e.color;
+      title = 'Cartão ' + e.color + ' — ' + esc(team);
+      sub = who ? who : '';
+    } else {
+      title = esc(e.text);
+    }
+    return '<div class="ev ' + cls + '"><div class="min">' + e.minute + "'</div><div class=\"tx\"><b>" +
+      title + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div></div>';
+  }
+
+  function render() {
+    var s = S;
+    $('home').textContent = s.teams.home;
+    $('away').textContent = s.teams.away;
+    $('venue').textContent = '📍 ' + s.venue;
+    var sc = s.score.home + ' x ' + s.score.away;
+    $('score').textContent = sc;
+    if (lastScore && lastScore !== sc) {
+      var el = $('score'); el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse');
+    }
+    lastScore = sc;
+
+    var st = $('status');
+    st.textContent = s.statusLabel;
+    st.className = 'pill ' + s.status;
+    var live = (s.status === 'first' || s.status === 'second');
+    $('live').className = 'live' + (s.status === 'finished' || s.status === 'pre' ? ' off' : '');
+    $('liveTxt').textContent = s.status === 'finished' ? 'ENCERRADO' : (s.status === 'pre' ? 'EM BREVE' : (live ? 'AO VIVO' : 'INTERVALO'));
+    $('viewers').textContent = s.viewers;
+
+    var cs = '';
+    ['home', 'away'].forEach(function (k) {
+      var c = s.cards[k], parts = [];
+      ['amarelo', 'azul', 'vermelho'].forEach(function (col) {
+        if (c[col]) parts.push('<span class="c ' + col + '"></span>' + c[col]);
+      });
+      if (parts.length) cs += '<span>' + esc(s.teams[k]) + ': ' + parts.join(' ') + '</span>';
+    });
+    $('cardsum').innerHTML = cs;
+
+    var evs = s.events.slice().reverse();
+    $('feed').innerHTML = evs.length ? evs.map(evHtml).join('') : '<div class="empty">A partida ainda não começou.</div>';
+    renderClock();
+  }
+
+  function apply(state) { S = state; receivedAt = Date.now(); render(); }
+
+  var socket = io({ auth: { role: 'viewer' } });
+  socket.on('state', apply);
+  socket.on('viewers', function (n) { if (S) { S.viewers = n; $('viewers').textContent = n; } });
+  socket.on('connect', function () { $('conn').style.display = 'none'; });
+  socket.on('disconnect', function () { $('conn').style.display = 'block'; });
+
+  // plano B: se o socket falhar, busca o estado a cada 10s
+  setInterval(function () {
+    if (socket.connected) return;
+    fetch('/api/final/state').then(function (r) { return r.json(); }).then(apply).catch(function () {});
+  }, 10000);
+
+  setInterval(renderClock, 500);
+})();
+</script>
+</body>
+</html>
