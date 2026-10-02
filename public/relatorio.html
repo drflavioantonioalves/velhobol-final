@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Velhobol — Relatório da final</title>
+<meta name="theme-color" content="#070d1f">
+<link rel="icon" href="/logo.png">
+<style>
+  :root { --bg:#070d1f; --card:#101b3b; --line:#22336a; --txt:#f4f6fb; --mut:#94a1c6; --red:#e11d2e; --green:#22c55e; --yellow:#facc15; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:radial-gradient(1000px 420px at 50% -120px,#16296a 0,var(--bg) 60%) no-repeat,var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:720px; margin:0 auto; padding:14px 14px 40px; }
+  .top { display:flex; align-items:center; gap:10px; padding:6px 0 12px; }
+  .top img { width:46px; height:46px; border-radius:50%; background:#fff; padding:2px; }
+  .top b { font-size:22px; letter-spacing:1.5px; } .top b span { color:var(--red); }
+  .top small { display:block; color:var(--mut); font-size:12px; letter-spacing:1px; text-transform:uppercase; }
+  .hero { text-align:center; border:1px solid var(--line); border-radius:20px; padding:18px 12px; background:linear-gradient(180deg,#13235a,#0d1838); }
+  .hero .k { color:var(--mut); font-size:12px; letter-spacing:2px; text-transform:uppercase; font-weight:700; }
+  .hero .w { color:var(--mut); font-size:13px; margin-top:4px; }
+  .sb { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:8px; align-items:center; margin-top:14px; }
+  .tm { min-width:0; } .tm b { display:block; font-size:clamp(13px,3.8vw,18px); overflow-wrap:break-word; }
+  .badge { width:64px; height:64px; border-radius:50%; margin:0 auto 6px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:24px; color:#fff; border:3px solid #ffffff30; }
+  .sc { font-size:clamp(44px,13vw,80px); font-weight:800; line-height:1; white-space:nowrap; }
+  .pen { color:var(--mut); font-size:14px; margin-top:6px; }
+  .champ { margin-top:14px; padding:10px; border-radius:12px; background:linear-gradient(90deg,#92400e,#fbbf24,#92400e); color:#2b1700; font-weight:800; font-size:20px; letter-spacing:1px; text-transform:uppercase; }
+  .partial { margin-top:12px; color:var(--yellow); font-size:13px; font-weight:700; }
+  .btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
+  .btn { display:block; text-align:center; text-decoration:none; font-size:15px; font-weight:700; padding:13px 8px; border-radius:12px; border:0; background:var(--red); color:#fff; cursor:pointer; font-family:inherit; }
+  .btn.sec { background:#243566; } .btn.wide { grid-column:1/-1; }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:14px; }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 6px; text-align:center; }
+  .stat b { display:block; font-size:24px; } .stat span { color:var(--mut); font-size:11px; text-transform:uppercase; letter-spacing:.8px; }
+  h2 { font-size:13px; margin:22px 0 8px; color:var(--mut); text-transform:uppercase; letter-spacing:1.5px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:4px 14px; }
+  .row { display:flex; gap:10px; padding:10px 0; border-top:1px solid #ffffff12; font-size:15px; }
+  .row:first-child { border-top:0; } .row .m { color:var(--mut); min-width:38px; font-weight:700; } .row small { color:var(--mut); }
+  .none { color:var(--mut); padding:12px 0; font-size:14px; }
+  .lu { display:grid; grid-template-columns:1fr 1fr; gap:10px; } @media (max-width:420px) { .lu { grid-template-columns:1fr; } }
+  .lu .card { padding:12px 14px; } .lu h3 { margin:0 0 6px; font-size:15px; } .lu h4 { margin:10px 0 4px; font-size:11px; color:var(--mut); text-transform:uppercase; letter-spacing:1.4px; }
+  .lu div.p { font-size:14px; padding:3px 0; } .lu .p i { font-style:normal; color:var(--mut); display:inline-block; min-width:24px; }
+  #preview { display:none; width:100%; border-radius:14px; margin-top:12px; border:1px solid var(--line); }
+  .hint { color:var(--mut); font-size:12px; text-align:center; margin-top:6px; }
+  footer { text-align:center; color:var(--mut); font-size:12px; margin-top:26px; } footer a { color:var(--mut); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><img src="/logo.png" alt=""><div><b>VELHO<span>BOL</span></b><small>Relatório da partida</small></div></div>
+
+  <section class="hero" id="hero">Carregando…</section>
+
+  <div class="btns">
+    <a class="btn" href="/relatorio.pdf">📄 Baixar PDF</a>
+    <button class="btn sec" id="btnImg">🖼️ Imagem para redes</button>
+    <button class="btn sec wide" id="btnShare">Compartilhar link do relatório</button>
+  </div>
+  <img id="preview" alt="Imagem do resultado">
+  <div class="hint" id="imgHint" style="display:none">Imagem pronta. No celular, toque e segure para salvar, ou use o botão para enviar.</div>
+
+  <div class="stats" id="stats"></div>
+
+  <h2>Gols</h2><div class="card" id="goals"></div>
+  <div id="pensWrap" style="display:none"><h2>Disputa de pênaltis</h2><div class="card" id="pens"></div></div>
+  <h2>Cartões</h2><div class="card" id="cards"></div>
+  <h2>Substituições</h2><div class="card" id="subs"></div>
+  <h2>Escalações</h2><div class="lu" id="lineups"></div>
+
+  <footer><a href="/">← Voltar para a página da final</a></footer>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var R = null;
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function who(n, name) { return (n ? n + ' · ' : '') + name; }
+  function hue(name) { var h = 0; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % 360; return h; }
+  function inits(name) { var w = name.trim().split(/\s+/); return ((w[0][0] || '?') + (w.length > 1 ? w[1][0] : '')).toUpperCase(); }
+  function badge(k) {
+    var url = R.images[k + 'Crest'], name = R.teams[k];
+    if (url) return '<div class="badge" style="background:#fff url(\'' + url + '\') center/78% no-repeat"></div>';
+    return '<div class="badge" style="background:linear-gradient(135deg,hsl(' + hue(name) + ',70%,45%),hsl(' + ((hue(name) + 40) % 360) + ',70%,30%))">' + esc(inits(name)) + '</div>';
+  }
+  function fmtWhen(d, t) {
+    if (!d) return t || '';
+    var p = d.split('-'), dt = new Date(+p[0], +p[1] - 1, +p[2]);
+    var s = dt.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    return s.charAt(0).toUpperCase() + s.slice(1) + (t ? ' · ' + t : '');
+  }
+  function rows(list, fn, none) { return list.length ? list.map(function (x) { return '<div class="row">' + fn(x) + '</div>'; }).join('') : '<div class="none">' + none + '</div>'; }
+
+  function render() {
+    var r = R;
+    $('hero').innerHTML = '<div class="k">Final do campeonato</div><div class="w">' + esc(fmtWhen(r.matchDate, r.matchTime)) + ' · 📍 ' + esc(r.venue) + '</div>' +
+      '<div class="sb"><div class="tm">' + badge('home') + '<b>' + esc(r.teams.home) + '</b></div><div class="sc">' + r.score.home + ' x ' + r.score.away + '</div><div class="tm">' + badge('away') + '<b>' + esc(r.teams.away) + '</b></div></div>' +
+      (r.pens ? '<div class="pen">Pênaltis: ' + r.pens.score.home + ' x ' + r.pens.score.away + '</div>' : '') +
+      (r.winnerName ? '<div class="champ">🏆 Campeão: ' + esc(r.winnerName) + '</div>' : '') +
+      (!r.finished ? '<div class="partial">Partida em andamento — relatório parcial</div>' : '');
+    $('stats').innerHTML = '<div class="stat"><b>' + r.goals.length + '</b><span>Gols</span></div>' +
+      '<div class="stat"><b>' + r.stats.peakViewers + '</b><span>Pico online</span></div>' +
+      '<div class="stat"><b>' + r.stats.commentsTotal + '</b><span>Comentários</span></div>';
+    $('goals').innerHTML = rows(r.goals, function (g) { return '<span class="m">' + g.minute + "'</span><div>⚽ <b>" + esc(r.teams[g.team]) + '</b>' + (g.player ? '<br><small>' + (g.ownGoal ? 'Gol contra de ' : '') + esc(who(g.num, g.player)) + '</small>' : (g.ownGoal ? '<br><small>Gol contra</small>' : '')) + '</div>'; }, 'Nenhum gol.');
+    $('pensWrap').style.display = r.penKicks.length ? 'block' : 'none';
+    $('pens').innerHTML = rows(r.penKicks, function (k) { return '<span class="m">' + (k.result === 'goal' ? '✅' : '❌') + '</span><div><b>' + esc(r.teams[k.team]) + '</b>' + (k.player ? '<br><small>' + esc(who(k.num, k.player)) + '</small>' : '') + '</div>'; }, '');
+    var col = { amarelo: '#facc15', azul: '#3b82f6', vermelho: '#ef4444' };
+    $('cards').innerHTML = rows(r.cards, function (c) { return '<span class="m">' + c.minute + "'</span><div><span style=\"display:inline-block;width:10px;height:14px;border-radius:2px;background:" + col[c.color] + ';margin-right:6px"></span><b>' + esc(r.teams[c.team]) + '</b>' + (c.player ? '<br><small>' + esc(who(c.num, c.player)) + '</small>' : '') + '</div>'; }, 'Nenhum cartão.');
+    $('subs').innerHTML = rows(r.subs, function (s) { return '<span class="m">' + s.minute + "'</span><div><b>" + esc(r.teams[s.team]) + '</b><br><small>▲ ' + esc(who(s.inNum, s.inName)) + ' &nbsp; ▼ ' + esc(who(s.outNum, s.outName)) + '</small></div>'; }, 'Nenhuma substituição.');
+    $('lineups').innerHTML = ['home', 'away'].map(function (k) {
+      var L = r.lineups[k];
+      function pl(list) { return list.map(function (p) { return '<div class="p"><i>' + esc(p.num || '') + '</i>' + esc(p.name) + '</div>'; }).join('') || '<div class="none" style="padding:4px 0">—</div>'; }
+      return '<div class="card"><h3>' + esc(r.teams[k]) + '</h3><h4>Titulares</h4>' + pl(L.starters) + '<h4>Reservas</h4>' + pl(L.bench) + '</div>';
+    }).join('');
+  }
+
+  // ---------- imagem 1080x1350 para redes sociais
+  function loadImg(src) { return new Promise(function (res) { if (!src) return res(null); var i = new Image(); i.onload = function () { res(i); }; i.onerror = function () { res(null); }; i.src = src; }); }
+  function breakLines(x, text, maxW) {
+    var words = text.split(' '), lines = [], line = '';
+    words.forEach(function (w) { var t = line ? line + ' ' + w : w; if (x.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
+    if (line) lines.push(line); return lines;
+  }
+  function wrapText(x, text, maxW, cx, y, lh, maxLines) {
+    var words = text.split(' '), line = '', n = 0;
+    for (var i = 0; i < words.length; i++) {
+      var t = line ? line + ' ' + words[i] : words[i];
+      if (x.measureText(t).width > maxW && line) { x.fillText(line, cx, y); y += lh; line = words[i]; if (++n >= maxLines) return y; } else line = t;
+    }
+    x.fillText(line, cx, y); return y + lh;
+  }
+  function makeImage() {
+    var r = R;
+    return Promise.all([loadImg('/logo.png'), loadImg(r.images.homeCrest), loadImg(r.images.awayCrest), loadImg(r.images.sponsorLogo)]).then(function (im) {
+      var c = document.createElement('canvas'); c.width = 1080; c.height = 1350;
+      var x = c.getContext('2d'), F = 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+      var g = x.createLinearGradient(0, 0, 0, 1350); g.addColorStop(0, '#16296a'); g.addColorStop(1, '#070d1f'); x.fillStyle = g; x.fillRect(0, 0, 1080, 1350);
+      x.strokeStyle = 'rgba(255,255,255,.07)'; x.lineWidth = 4; x.strokeRect(60, 330, 960, 560); x.beginPath(); x.moveTo(540, 330); x.lineTo(540, 890); x.stroke(); x.beginPath(); x.arc(540, 610, 90, 0, 7); x.stroke();
+      x.textAlign = 'center'; x.fillStyle = '#fff';
+      if (im[0]) { x.save(); x.beginPath(); x.arc(540, 130, 70, 0, 7); x.fillStyle = '#fff'; x.fill(); x.clip(); x.drawImage(im[0], 470, 60, 140, 140); x.restore(); }
+      x.fillStyle = '#fff'; x.font = '800 54px ' + F; x.fillText('VELHOBOL', 540, 260);
+      x.fillStyle = '#94a1c6'; x.font = '600 28px ' + F; x.fillText('FINAL DO CAMPEONATO', 540, 305);
+      x.font = '500 26px ' + F; x.fillText(fmtWhen(r.matchDate, r.matchTime), 540, 345);
+      function team(k, cx, img) {
+        x.beginPath(); x.arc(cx, 470, 72, 0, 7);
+        if (img) { x.save(); x.fillStyle = '#fff'; x.fill(); x.clip(); x.drawImage(img, cx - 56, 414, 112, 112); x.restore(); }
+        else { var hu = hue(r.teams[k]); var gg = x.createLinearGradient(cx - 72, 398, cx + 72, 542); gg.addColorStop(0, 'hsl(' + hu + ',70%,45%)'); gg.addColorStop(1, 'hsl(' + ((hu + 40) % 360) + ',70%,30%)'); x.fillStyle = gg; x.fill(); x.fillStyle = '#fff'; x.font = '800 54px ' + F; x.fillText(inits(r.teams[k]), cx, 490); }
+        x.fillStyle = '#fff'; var fz = 34, ls;
+        for (;;) { x.font = '700 ' + fz + 'px ' + F; ls = breakLines(x, r.teams[k], 290); if (ls.length <= 2 || fz <= 20) break; fz -= 2; }
+        ls.slice(0, 3).forEach(function (l, i) { x.fillText(l, cx, 585 + i * (fz + 6)); });
+      }
+      team('home', 150, im[1]); team('away', 930, im[2]);
+      x.fillStyle = '#fff'; x.font = '800 170px ' + F; x.fillText(r.score.home + ' x ' + r.score.away, 540, 535);
+      var y = 700;
+      if (r.pens) { x.fillStyle = '#d8b4fe'; x.font = '700 40px ' + F; x.fillText('Pênaltis: ' + r.pens.score.home + ' x ' + r.pens.score.away, 540, y); y += 30; }
+      if (r.winnerName) {
+        y += 20; var gr = x.createLinearGradient(140, 0, 940, 0); gr.addColorStop(0, '#92400e'); gr.addColorStop(.5, '#fbbf24'); gr.addColorStop(1, '#92400e');
+        x.fillStyle = gr; x.beginPath(); x.roundRect ? x.roundRect(140, y, 800, 90, 24) : x.rect(140, y, 800, 90); x.fill();
+        x.fillStyle = '#2b1700'; var ct = '🏆 CAMPEÃO: ' + r.winnerName.toUpperCase(), fs = 44; x.font = '800 ' + fs + 'px ' + F;
+        while (x.measureText(ct).width > 740 && fs > 20) { fs -= 2; x.font = '800 ' + fs + 'px ' + F; }
+        x.fillText(ct, 540, y + 58); y += 130;
+      } else y += 40;
+      x.fillStyle = '#94a1c6'; x.font = '700 28px ' + F; x.fillText('GOLS', 540, y); y += 12;
+      x.fillStyle = '#fff'; x.font = '500 36px ' + F;
+      var gl = r.goals.slice(0, 7);
+      if (!gl.length) { y += 58; x.fillStyle = '#94a1c6'; x.fillText('Sem gols no tempo regulamentar', 540, y); }
+      gl.forEach(function (gx) { y += 58; x.fillText("⚽ " + gx.minute + "'  " + (gx.player ? gx.player : r.teams[gx.team]) + (gx.ownGoal ? ' (contra)' : '') + '  ·  ' + r.teams[gx.team], 540, y); });
+      if (r.goals.length > 7) { y += 58; x.fillStyle = '#94a1c6'; x.fillText('+ ' + (r.goals.length - 7) + ' gols', 540, y); }
+      x.textAlign = 'center'; x.fillStyle = '#94a1c6'; x.font = '500 26px ' + F; x.fillText('📍 ' + r.venue, 540, 1235);
+      if (r.sponsor && r.sponsor.name || im[3]) {
+        x.fillStyle = '#94a1c6'; x.font = '600 20px ' + F; x.fillText('PATROCINADOR DA RODADA', 540, 1272);
+        if (im[3]) { var h = 44, w = im[3].width * h / im[3].height; x.drawImage(im[3], 540 - w / 2, 1280, w, h); }
+        else { x.fillStyle = '#fff'; x.font = '700 30px ' + F; x.fillText(r.sponsor.name, 540, 1315); }
+      }
+      x.fillStyle = '#e11d2e'; x.fillRect(0, 1340, 1080, 10);
+      return new Promise(function (res) { c.toBlob(function (b) { res(b); }, 'image/png'); });
+    });
+  }
+
+  $('btnImg').onclick = function () {
+    var btn = this; btn.disabled = true; btn.textContent = 'Gerando…';
+    makeImage().then(function (blob) {
+      var url = URL.createObjectURL(blob), pv = $('preview'); pv.src = url; pv.style.display = 'block'; $('imgHint').style.display = 'block';
+      var file = new File([blob], 'velhobol-final.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], title: 'Velhobol — Final' }).catch(function () {});
+      else { var a = document.createElement('a'); a.href = url; a.download = 'velhobol-final.png'; document.body.appendChild(a); a.click(); a.remove(); }
+    }).catch(function () { alert('Não foi possível gerar a imagem neste aparelho.'); }).then(function () { btn.disabled = false; btn.textContent = '🖼️ Imagem para redes'; });
+  };
+  window.__makeImage = makeImage;
+
+  $('btnShare').onclick = function () {
+    var d = { title: 'Velhobol — Relatório da final', text: 'Resumo da final do Velhobol', url: location.href };
+    if (navigator.share) navigator.share(d).catch(function () {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(d.url).then(function () { alert('Link copiado!'); });
+  };
+
+  fetch('/api/final/report').then(function (r) { return r.json(); }).then(function (j) { R = j; render(); window.__ready = true; })
+    .catch(function () { $('hero').textContent = 'Não foi possível carregar o relatório.'; });
+})();
+</script>
+</body>
+</html>

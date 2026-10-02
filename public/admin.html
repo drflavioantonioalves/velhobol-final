@@ -5,40 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Velhobol — Painel da Final</title>
+<link rel="icon" href="/logo.png">
 <style>
-  :root { --bg:#0b1a12; --card:#12261b; --line:#1f3a2a; --txt:#f2f7f3; --mut:#8fa99a; --green:#22c55e; --yellow:#facc15; --blue:#3b82f6; --red:#ef4444; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
-  .wrap { max-width:640px; margin:0 auto; padding:14px; }
-  h1 { font-size:20px; margin:0 0 4px; } h1 span { color:var(--green); }
-  h2 { font-size:15px; margin:0 0 10px; color:var(--mut); text-transform:uppercase; letter-spacing:1px; }
+  :root { --bg:#070d1f; --card:#101b3b; --card2:#16244b; --line:#22336a; --txt:#f4f6fb; --mut:#94a1c6; --red:#e11d2e; --green:#22c55e; --yellow:#facc15; --cblue:#3b82f6; --cred:#ef4444; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:640px; margin:0 auto; padding:0 14px 40px; }
+  .head { display:flex; align-items:center; gap:10px; padding:12px 0; }
+  .head img { width:42px; height:42px; border-radius:50%; background:#fff; padding:2px; }
+  .head h1 { font-size:18px; margin:0; } .head h1 span { color:var(--red); }
+  h2 { font-size:13px; margin:0 0 10px; color:var(--mut); text-transform:uppercase; letter-spacing:1.2px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-top:14px; }
   label { display:block; font-size:13px; color:var(--mut); margin:10px 0 4px; }
-  input[type=text], input[type=password], input[type=number] { width:100%; padding:12px; font-size:16px; border-radius:10px; border:1px solid var(--line); background:#0b1a12; color:var(--txt); }
-  button { font-size:16px; font-weight:700; padding:13px 14px; border-radius:10px; border:0; background:var(--green); color:#04210f; cursor:pointer; }
-  button.sec { background:#223d2e; color:var(--txt); } button.warn { background:#7f1d1d; color:#fff; }
-  button.sm { font-size:13px; padding:6px 10px; } button:disabled { opacity:.4; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  input[type=text], input[type=password], input[type=number], input[type=date], input[type=time], select, textarea {
+    width:100%; padding:12px; font-size:16px; border-radius:10px; border:1px solid var(--line); background:#0a1230; color:var(--txt); font-family:inherit; }
+  textarea { min-height:150px; resize:vertical; }
+  select:disabled { opacity:.5; }
+  button { font-size:16px; font-weight:700; padding:13px 14px; border-radius:10px; border:0; background:var(--red); color:#fff; cursor:pointer; }
+  button.sec { background:#243566; color:var(--txt); } button.ok { background:#16a34a; } button.warn { background:#7f1d1d; }
+  button.sm { font-size:13px; padding:6px 10px; } button:disabled { opacity:.35; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; } .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
   .full { width:100%; margin-top:10px; }
-  .opt { position:relative; }
+  .opt { position:relative; margin:0; }
   .opt input { position:absolute; opacity:0; inset:0; }
-  .opt span { display:block; text-align:center; padding:12px 6px; border-radius:10px; border:2px solid var(--line); background:#0b1a12; font-weight:600; word-break:break-word; }
-  .opt input:checked + span { border-color:var(--green); background:#143323; }
-  .opt.amarelo input:checked + span { border-color:var(--yellow); } .opt.azul input:checked + span { border-color:var(--blue); } .opt.vermelho input:checked + span { border-color:var(--red); }
-  .st { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .opt span { display:block; text-align:center; padding:12px 6px; border-radius:10px; border:2px solid var(--line); background:#0a1230; font-weight:600; word-break:break-word; color:var(--txt); font-size:15px; }
+  .opt input:checked + span { border-color:var(--red); background:#2a1020; }
+  .opt.amarelo input:checked + span { border-color:var(--yellow); background:#2a2510; } .opt.azul input:checked + span { border-color:var(--cblue); background:#102048; } .opt.vermelho input:checked + span { border-color:var(--cred); background:#2a1020; }
+  .bar { position:sticky; top:0; z-index:10; background:#0b1535ee; backdrop-filter:blur(6px); border:1px solid var(--line); border-radius:14px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:6px; }
   .big { font-size:28px; font-weight:800; font-variant-numeric:tabular-nums; }
-  .evrow { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 0; border-top:1px solid var(--line); font-size:14px; }
+  .mut { color:var(--mut); font-size:13px; }
+  .evrow { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:9px 0; border-top:1px solid #ffffff12; font-size:14px; }
   .evrow:first-child { border-top:0; }
-  #toast { position:fixed; left:12px; right:12px; bottom:14px; max-width:616px; margin:0 auto; padding:12px; border-radius:10px; font-weight:600; display:none; text-align:center; z-index:9; }
+  details { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:0 14px; margin-top:14px; }
+  summary { padding:14px 0; font-weight:700; cursor:pointer; color:var(--txt); }
+  details[open] { padding-bottom:14px; } details[open] summary { border-bottom:1px solid var(--line); margin-bottom:6px; }
+  .hint { color:var(--mut); font-size:12px; margin-top:4px; line-height:1.4; }
+  #toast { position:fixed; left:12px; right:12px; bottom:14px; max-width:616px; margin:0 auto; padding:12px; border-radius:10px; font-weight:600; display:none; text-align:center; z-index:99; }
   #toast.ok { background:#14532d; } #toast.err { background:#7f1d1d; }
-  a { color:var(--green); } .hide { display:none; } .mut { color:var(--mut); font-size:13px; }
+  a { color:#8fb0ff; } .hide { display:none; }
+  .other { margin-top:6px; }
+  .btnlink { display:block; text-align:center; text-decoration:none; font-weight:700; padding:13px; border-radius:10px; background:var(--red); color:#fff; margin-top:8px; }
+  .btnlink.sec { background:#243566; }
+  .imgrow { display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid #ffffff12; flex-wrap:wrap; }
+  .imgrow:first-child { border-top:0; } .imgrow .th { width:56px; height:56px; border-radius:8px; background:#0a1230; border:1px solid var(--line); object-fit:contain; flex:none; }
+  .imgrow .lb { flex:1; min-width:130px; font-size:14px; } .imgrow input[type=file] { font-size:13px; max-width:100%; color:var(--mut); }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Velho<span>bol</span> — Painel da Final</h1>
-  <div class="mut"><a href="/" target="_blank">Abrir página pública</a></div>
+  <div class="head">
+    <img src="/logo.png" alt="">
+    <div><h1>Velho<span>bol</span> — Painel da Final</h1><div class="mut"><a href="/" target="_blank">Abrir página pública</a></div></div>
+  </div>
 
   <!-- LOGIN -->
   <div class="card" id="login">
@@ -50,16 +68,63 @@
 
   <!-- PAINEL -->
   <div id="panel" class="hide">
+    <div class="bar">
+      <div><div class="mut" id="stLabel">—</div><div class="big" id="stScore">0 x 0</div></div>
+      <div class="big" id="stClock">00:00</div>
+    </div>
+
+    <div class="card hide" id="restoreBanner" style="border-color:#facc15;background:#2a2510">
+      <h2 style="color:#facc15">⚠️ O jogo parece ter sumido</h2>
+      <div id="restoreMsg" style="font-size:14px;line-height:1.4"></div>
+      <button class="full ok" id="btnRestoreLocal">Restaurar o jogo salvo neste aparelho</button>
+    </div>
+
+    <div class="card hide" id="reportCard" style="border-color:#16a34a">
+      <h2 style="color:#4ade80">📄 Partida encerrada: relatório</h2>
+      <a class="btnlink" href="/relatorio" target="_blank">Ver relatório e imagem para redes</a>
+      <a class="btnlink sec" href="/relatorio.pdf">Baixar PDF</a>
+      <div class="hint">Dica: baixe também o backup completo (seção "Backup e restauração" abaixo) antes de fechar o painel.</div>
+    </div>
+
     <div class="card">
-      <div class="st">
-        <div><div class="mut" id="stLabel">—</div><div class="big" id="stScore">0 x 0</div></div>
-        <div class="big" id="stClock">00:00</div>
-      </div>
+      <h2>Controle da partida</h2>
       <div class="grid">
-        <button class="full" data-a="start_first">▶ Iniciar 1º tempo</button>
-        <button class="full sec" data-a="halftime">⏸ Intervalo</button>
-        <button class="full" data-a="start_second">▶ Iniciar 2º tempo</button>
-        <button class="full warn" data-a="finish" data-confirm="Encerrar a partida?">⏹ Encerrar</button>
+        <button class="ok" data-a="start_first" data-confirm="Iniciar o 1º tempo agora? O relógio começa a contar.">▶ Iniciar 1º tempo</button>
+        <button class="sec" data-a="halftime" data-confirm="Começar o intervalo?">⏸ Intervalo</button>
+        <button class="ok" data-a="start_second" data-confirm="Iniciar o 2º tempo agora?">▶ Iniciar 2º tempo</button>
+        <button class="warn" data-a="finish" data-confirm="Encerrar a partida?">⏹ Encerrar</button>
+      </div>
+      <button class="full sec" id="btnUndo" data-a="undo_phase">↩ Desfazer</button>
+      <div class="hint">Apertou sem querer? Desfaz a última mudança de fase, desde que ainda não tenha havido lances depois dela.</div>
+      <h2 style="margin-top:18px">Prorrogação (se empatar)</h2>
+      <div class="grid3">
+        <button class="sec" data-a="start_extra" data-confirm="Iniciar a prorrogação?">▶ Iniciar</button>
+        <button class="sec" data-a="extra_halftime" data-confirm="Intervalo da prorrogação?">⏸ Intervalo</button>
+        <button class="sec" data-a="start_extra2" data-confirm="Iniciar o 2º tempo da prorrogação?">▶ 2º tempo</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🥅 Disputa de pênaltis</h2>
+      <div id="penStartBox">
+        <div class="hint" style="margin:0 0 8px">Só se a final terminar empatada. Escolha quem cobra primeiro (sorteio) e inicie.</div>
+        <div class="grid">
+          <label class="opt"><input type="radio" name="penFirst" value="home"><span class="tn" data-t="home">Casa</span></label>
+          <label class="opt"><input type="radio" name="penFirst" value="away"><span class="tn" data-t="away">Visitante</span></label>
+        </div>
+        <button class="full sec" id="btnPenStart">Iniciar disputa de pênaltis</button>
+      </div>
+      <div id="penPlayBox" class="hide">
+        <div class="big" id="penScore" style="font-size:24px"></div>
+        <div class="mut" id="penNext" style="margin:4px 0 8px"></div>
+        <label for="penPlayer">Quem cobrou</label>
+        <select id="penPlayer"></select>
+        <input type="text" id="penOther" class="other hide" maxlength="40" placeholder="Nome do jogador">
+        <div class="grid">
+          <button class="full ok" id="btnPenGoal">✅ Converteu</button>
+          <button class="full warn" id="btnPenMiss">❌ Perdeu</button>
+        </div>
+        <button class="full sec sm" id="btnPenCancel">Cancelar disputa (só antes da 1ª cobrança)</button>
       </div>
     </div>
 
@@ -69,10 +134,11 @@
         <label class="opt"><input type="radio" name="goalTeam" value="home"><span class="tn" data-t="home">Casa</span></label>
         <label class="opt"><input type="radio" name="goalTeam" value="away"><span class="tn" data-t="away">Visitante</span></label>
       </div>
-      <label for="goalPlayer">Jogador</label>
-      <input type="text" id="goalPlayer" maxlength="40" placeholder="Nome do jogador">
-      <label><input type="checkbox" id="goalOwn"> Gol contra (o jogador acima é do time adversário)</label>
-      <button class="full" id="btnGoal">Registrar gol</button>
+      <label for="goalPlayer">Quem fez o gol</label>
+      <select id="goalPlayer"></select>
+      <input type="text" id="goalOther" class="other hide" maxlength="40" placeholder="Nome do jogador">
+      <label><input type="checkbox" id="goalOwn"> Gol contra (a lista mostra os jogadores do time adversário)</label>
+      <button class="full ok" id="btnGoal">Registrar gol</button>
     </div>
 
     <div class="card">
@@ -88,41 +154,92 @@
         <label class="opt vermelho"><input type="radio" name="cardColor" value="vermelho"><span>Vermelho</span></label>
       </div>
       <label for="cardPlayer">Jogador</label>
-      <input type="text" id="cardPlayer" maxlength="40" placeholder="Nome do jogador">
+      <select id="cardPlayer"></select>
+      <input type="text" id="cardOther" class="other hide" maxlength="40" placeholder="Nome do jogador">
       <button class="full" id="btnCard">Registrar cartão</button>
     </div>
 
     <div class="card">
-      <h2>💬 Lance a lance (texto livre)</h2>
-      <input type="text" id="noteText" maxlength="200" placeholder="Ex.: Trave! Quase o gol…">
-      <button class="full sec" id="btnNote">Publicar lance</button>
+      <h2>🔄 Substituição</h2>
+      <div class="grid">
+        <label class="opt"><input type="radio" name="subTeam" value="home"><span class="tn" data-t="home">Casa</span></label>
+        <label class="opt"><input type="radio" name="subTeam" value="away"><span class="tn" data-t="away">Visitante</span></label>
+      </div>
+      <label for="subOut">Sai (em campo)</label>
+      <select id="subOut"></select>
+      <label for="subIn">Entra (banco)</label>
+      <select id="subIn"></select>
+      <button class="full" id="btnSub">Registrar substituição</button>
     </div>
 
     <div class="card">
-      <h2>Lances registrados</h2>
+      <h2>Gols, cartões e substituições</h2>
       <div id="evlist" class="mut">Nenhum lance ainda.</div>
     </div>
 
     <div class="card">
-      <h2>Configuração da partida</h2>
-      <label for="cfgHome">Time da casa</label><input type="text" id="cfgHome" maxlength="30">
-      <label for="cfgAway">Time visitante</label><input type="text" id="cfgAway" maxlength="30">
-      <label for="cfgVenue">Campo / estádio</label><input type="text" id="cfgVenue" maxlength="60">
-      <label for="cfgHalf">Duração de cada tempo (minutos)</label><input type="number" id="cfgHalf" min="1" max="60">
-      <button class="full" id="btnSetup">Salvar configuração</button>
+      <h2>💬 Comentários da torcida</h2>
+      <div class="evrow" style="border:0"><span class="mut" id="cmState">—</span><button class="sec sm" id="btnCmToggle">Fechar comentários</button></div>
+      <div id="cmlist" class="mut">Nenhum comentário ainda.</div>
     </div>
 
-    <div class="card">
-      <h2>Ajustes de emergência</h2>
+    <details>
+      <summary>⚙️ Configuração: times, data, campo, patrocinador</summary>
+      <label for="cfgHome">Time da casa</label><input type="text" id="cfgHome" maxlength="30">
+      <label for="cfgAway">Time visitante</label><input type="text" id="cfgAway" maxlength="30">
+      <div class="grid">
+        <div><label for="cfgDate">Data do jogo</label><input type="date" id="cfgDate"></div>
+        <div><label for="cfgTime">Horário</label><input type="time" id="cfgTime"></div>
+      </div>
+      <label for="cfgVenue">Campo / estádio</label><input type="text" id="cfgVenue" maxlength="60">
+      <label for="cfgHalf">Duração de cada tempo (minutos)</label><input type="number" id="cfgHalf" min="1" max="60">
+      <label for="cfgExtra">Duração de cada tempo da prorrogação (minutos)</label><input type="number" id="cfgExtra" min="1" max="30">
+      <label for="cfgStream">Link da transmissão no YouTube (opcional)</label><input type="text" id="cfgStream" placeholder="https://www.youtube.com/watch?v=...">
+      <div class="hint">Cole o link da transmissão ao vivo. O vídeo aparece na página. Deixe vazio para esconder.</div>
+      <label for="cfgSp">Patrocinador da rodada (nome)</label><input type="text" id="cfgSp" maxlength="40" placeholder="Deixe vazio para mostrar o espaço reservado">
+      <label for="cfgSpTag">Frase do patrocinador (opcional)</label><input type="text" id="cfgSpTag" maxlength="80">
+      <button class="full ok" id="btnSetup">Salvar configuração</button>
+    </details>
+
+    <details>
+      <summary>📋 Escalações</summary>
+      <div class="hint">Um jogador por linha. Pode começar com o número da camisa. Exemplo: <b>10 João Silva</b>. Cada nome só pode aparecer uma vez no time.</div>
+      <h2 style="margin-top:14px" class="tn" data-t="home">Casa</h2>
+      <label for="luHomeS">Titulares</label><textarea id="luHomeS"></textarea>
+      <label for="luHomeB">Reservas</label><textarea id="luHomeB" style="min-height:90px"></textarea>
+      <button class="full ok" id="btnLuHome">Salvar escalação (casa)</button>
+      <h2 style="margin-top:22px" class="tn" data-t="away">Visitante</h2>
+      <label for="luAwayS">Titulares</label><textarea id="luAwayS"></textarea>
+      <label for="luAwayB">Reservas</label><textarea id="luAwayB" style="min-height:90px"></textarea>
+      <button class="full ok" id="btnLuAway">Salvar escalação (visitante)</button>
+    </details>
+
+    <details>
+      <summary>🖼️ Fotos e logos</summary>
+      <div class="hint">Escudo e logo aparecem no placar. A foto do elenco aparece na aba Escalações. As imagens são reduzidas automaticamente.</div>
+      <div id="imgs"></div>
+    </details>
+
+    <details>
+      <summary>💾 Backup e restauração</summary>
+      <div class="hint">O painel guarda sozinho uma cópia do jogo neste aparelho a cada 20 segundos. Se o servidor reiniciar, aparece um aviso para restaurar. Você também pode baixar um arquivo de backup.</div>
+      <button class="full ok" id="btnBackup">Baixar backup completo (com imagens)</button>
+      <label for="fileRestore">Restaurar de um arquivo de backup</label>
+      <input type="file" id="fileRestore" accept=".json,application/json">
+      <div class="hint" id="localInfo"></div>
+    </details>
+
+    <details>
+      <summary>🚨 Ajustes de emergência</summary>
       <label>Corrigir relógio (só com a bola rolando)</label>
       <div class="grid">
         <input type="number" id="adjMin" min="0" max="180" placeholder="minutos">
         <input type="number" id="adjSec" min="0" max="59" placeholder="segundos">
       </div>
       <button class="full sec" id="btnAdj">Ajustar relógio</button>
-      <button class="full warn" id="btnReset">Reiniciar partida (apaga placar e lances)</button>
+      <button class="full warn" id="btnReset">Reiniciar partida (apaga placar, lances e comentários)</button>
       <button class="full sec" id="btnLogout">Sair</button>
-    </div>
+    </details>
   </div>
 </div>
 <div id="toast"></div>
@@ -141,6 +258,7 @@
     });
   }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function who(num, name) { return (num ? num + ' · ' : '') + name; }
 
   function toast(msg, ok) {
     var t = $('toast'); t.textContent = msg; t.className = ok ? 'ok' : 'err'; t.style.display = 'block';
@@ -154,21 +272,23 @@
       body: JSON.stringify(body)
     }).then(function (r) {
       return r.json().then(function (j) {
-        if (r.status === 401) { showLogin(); }
+        if (r.status === 401) showLogin();
         if (!j.ok) throw new Error(j.error || 'Erro');
         return j;
       });
     });
   }
-
   function act(body, okMsg) {
-    return api(body).then(function (j) { toast(okMsg || 'Feito!', true); if (j.state) apply(j.state); return j; })
+    return api(body).then(function (j) {
+      toast(okMsg || 'Feito!', true); if (j.state) apply(j.state);
+      if (body.action === 'reset' || body.action === 'undo_phase') { try { localStorage.removeItem(LB); } catch (e) {} } else scheduleBackup();
+      return j;
+    })
       .catch(function (e) { toast(e.message, false); throw e; });
   }
 
   function showLogin() { $('login').classList.remove('hide'); $('panel').classList.add('hide'); }
   function showPanel() { $('login').classList.add('hide'); $('panel').classList.remove('hide'); }
-
   function login() {
     KEY = $('key').value.trim() || KEY;
     api({ action: 'ping' }).then(function () {
@@ -185,39 +305,130 @@
   }
   function renderClock() { var t = seconds(); $('stClock').textContent = pad(Math.floor(t / 60)) + ':' + pad(t % 60); }
 
+  function radio(name) { var r = document.querySelector('input[name=' + name + ']:checked'); return r ? r.value : null; }
+  function other(t) { return t === 'home' ? 'away' : 'home'; }
+
+  // ---------- listas de jogadores (selecionar em vez de digitar)
+  function opts(list) {
+    return list.map(function (p) { return '<option value="' + esc(p.name) + '">' + esc(who(p.num, p.name)) + '</option>'; }).join('');
+  }
+  function fillSelect(sel, team, mode) {
+    // mode: 'all' (em campo + banco, com "outro"), 'field' (só em campo), 'off' (só banco)
+    var f = team ? S.field[team] : [], o = team ? S.off[team] : [];
+    var key = (team || '-') + '|' + mode + '|' + JSON.stringify(f) + JSON.stringify(o);
+    if (sel.dataset.key === key) return;
+    sel.dataset.key = key;
+    var prev = sel.value, h;
+    if (!team) h = '<option value="">Escolha o time primeiro…</option>';
+    else if (mode === 'field') h = '<option value="">Selecione quem sai…</option>' + opts(f);
+    else if (mode === 'off') h = '<option value="">Selecione quem entra…</option>' + opts(o);
+    else {
+      h = '<option value="">Selecione o jogador…</option>';
+      if (f.length) h += '<optgroup label="Em campo">' + opts(f) + '</optgroup>';
+      if (o.length) h += '<optgroup label="Banco / fora de campo">' + opts(o) + '</optgroup>';
+      h += '<option value="__other">Outro (digitar nome)…</option>';
+    }
+    sel.innerHTML = h; sel.disabled = !team;
+    if (prev && Array.prototype.some.call(sel.options, function (op) { return op.value === prev; })) sel.value = prev;
+    toggleOther(sel);
+  }
+  function toggleOther(sel) {
+    var inp = { goalPlayer: $('goalOther'), cardPlayer: $('cardOther'), penPlayer: $('penOther') }[sel.id];
+    if (inp) inp.classList.toggle('hide', sel.value !== '__other');
+  }
+  function refreshSelects() {
+    if (!S) return;
+    var gt = radio('goalTeam'), gteam = gt ? ($('goalOwn').checked ? other(gt) : gt) : null;
+    fillSelect($('goalPlayer'), gteam, 'all');
+    fillSelect($('cardPlayer'), radio('cardTeam'), 'all');
+    var st = radio('subTeam');
+    fillSelect($('penPlayer'), (S.pens.active && !S.pens.decided) ? S.pens.next : null, 'all');
+    fillSelect($('subOut'), st, 'field');
+    fillSelect($('subIn'), st, 'off');
+  }
+  function pick(selId, otherId) {
+    var v = $(selId).value;
+    return v === '__other' ? $(otherId).value.trim() : v;
+  }
+
+  function rosterText(list) { return list.map(function (p) { return (p.num ? p.num + ' ' : '') + p.name; }).join('\n'); }
+
   function apply(s) {
     S = s; receivedAt = Date.now();
     $('stLabel').textContent = s.teams.home + ' x ' + s.teams.away + ' · ' + s.statusLabel;
-    $('stScore').textContent = s.score.home + ' x ' + s.score.away;
+    $('stScore').innerHTML = s.score.home + ' x ' + s.score.away + (s.pens.active ? ' <small style="font-size:14px;font-weight:700;color:var(--mut)">pên. ' + s.pens.score.home + ' x ' + s.pens.score.away + '</small>' : '');
     document.querySelectorAll('.tn').forEach(function (el) { el.textContent = s.teams[el.dataset.t]; });
     if (!cfgFilled) {
-      $('cfgHome').value = s.teams.home; $('cfgAway').value = s.teams.away;
-      $('cfgVenue').value = s.venue; $('cfgHalf').value = s.halfLengthMin; cfgFilled = true;
+      $('cfgHome').value = s.teams.home; $('cfgAway').value = s.teams.away; $('cfgVenue').value = s.venue; $('cfgHalf').value = s.halfLengthMin;
+      $('cfgDate').value = s.matchDate || ''; $('cfgTime').value = s.matchTime || '';
+      $('cfgExtra').value = s.extraLengthMin; $('cfgStream').value = s.streamId ? 'https://www.youtube.com/watch?v=' + s.streamId : '';
+      $('cfgSp').value = s.sponsor.name || ''; $('cfgSpTag').value = s.sponsor.tagline || '';
+      $('luHomeS').value = rosterText(s.lineups.home.starters); $('luHomeB').value = rosterText(s.lineups.home.bench);
+      $('luAwayS').value = rosterText(s.lineups.away.starters); $('luAwayB').value = rosterText(s.lineups.away.bench);
+      cfgFilled = true;
     }
-    // habilita só os botões válidos para a fase atual
     var ok = { start_first: s.status === 'pre', halftime: s.status === 'first', start_second: s.status === 'halftime',
-      finish: s.status === 'first' || s.status === 'halftime' || s.status === 'second' };
+      finish: ['first', 'halftime', 'second', 'extra1', 'extrabreak', 'extra2', 'penalties'].indexOf(s.status) !== -1,
+      start_extra: (s.status === 'second' || s.status === 'finished') && s.score.home === s.score.away && !s.extraStarted && !s.pens.active,
+      extra_halftime: s.status === 'extra1', start_extra2: s.status === 'extrabreak', undo_phase: s.undo.available };
     document.querySelectorAll('[data-a]').forEach(function (b) { b.disabled = !ok[b.dataset.a]; });
 
     var list = s.events.slice().reverse();
     $('evlist').innerHTML = list.length ? list.map(function (e) {
-      var d = e.type === 'goal' ? '⚽ Gol ' + esc(s.teams[e.team]) + (e.player ? ' — ' + esc(e.player) : '') + (e.ownGoal ? ' (contra)' : '')
-        : e.type === 'card' ? 'Cartão ' + e.color + ' ' + esc(s.teams[e.team]) + (e.player ? ' — ' + esc(e.player) : '')
-        : esc(e.text);
+      var d, tn = e.team ? esc(s.teams[e.team]) : '';
+      if (e.type === 'goal') d = '⚽ Gol ' + tn + (e.player ? ' — ' + esc(who(e.num, e.player)) : '') + (e.ownGoal ? ' (contra)' : '');
+      else if (e.type === 'card') d = 'Cartão ' + e.color + ' ' + tn + (e.player ? ' — ' + esc(who(e.num, e.player)) : '');
+      else if (e.type === 'pen') d = '🥅 Pênalti ' + (e.result === 'goal' ? 'convertido' : 'perdido') + ' — ' + tn + (e.player ? ' — ' + esc(who(e.num, e.player)) : '');
+      else if (e.type === 'sub') d = '🔄 ' + tn + ': entra ' + esc(who(e.inNum, e.inName)) + ', sai ' + esc(who(e.outNum, e.outName));
+      else d = esc(e.text);
       var del = e.type === 'status' ? '' : '<button class="sec sm" data-del="' + e.id + '">Apagar</button>';
-      return '<div class="evrow"><div>' + e.minute + "' · " + d + '</div>' + del + '</div>';
+      return '<div class="evrow"><div>' + (e.type === 'pen' ? 'PÊN' : e.minute + "'") + ' · ' + d + '</div>' + del + '</div>';
     }).join('') : 'Nenhum lance ainda.';
+
+    $('cmState').textContent = s.commentsOpen ? 'Comentários abertos' : 'Comentários FECHADOS';
+    $('btnCmToggle').textContent = s.commentsOpen ? 'Fechar comentários' : 'Reabrir comentários';
+    $('btnCmToggle').dataset.open = s.commentsOpen ? '1' : '0';
+    var cl = (s.comments || []).slice().reverse();
+    $('cmlist').innerHTML = cl.length ? cl.map(function (c) {
+      return '<div class="evrow"><div><b>' + esc(c.name) + '</b>: ' + esc(c.text) + '</div><button class="sec sm" data-delc="' + c.id + '">Apagar</button></div>';
+    }).join('') : 'Nenhum comentário ainda.';
+
+    $('btnUndo').textContent = s.undo.available ? '↩ Desfazer: ' + s.undo.label : '↩ Desfazer (nada a desfazer agora)';
+    $('reportCard').classList.toggle('hide', s.status !== 'finished');
+    renderImages(); checkRestoreBanner();
+
+    var pn = s.pens;
+    $('penStartBox').classList.toggle('hide', pn.active);
+    $('penPlayBox').classList.toggle('hide', !pn.active);
+    $('btnPenStart').disabled = !((s.status === 'second' || s.status === 'extra2' || s.status === 'finished') && s.score.home === s.score.away);
+    if (pn.active) {
+      $('penScore').textContent = 'Pênaltis: ' + pn.score.home + ' x ' + pn.score.away;
+      $('penNext').textContent = pn.decided ? '🏆 Decidido: ' + s.teams[pn.winner] + ' venceu nos pênaltis. Encerre a partida.'
+        : 'Próxima cobrança: ' + s.teams[pn.next] + ' (' + (pn.results.home.length + pn.results.away.length + 1) + 'ª cobrança)';
+      $('btnPenGoal').disabled = $('btnPenMiss').disabled = pn.decided || !(s.status === 'penalties' || s.status === 'finished');
+      $('btnPenCancel').disabled = !(s.status === 'penalties' && !pn.results.home.length && !pn.results.away.length);
+    }
+
+    refreshSelects();
     renderClock();
   }
 
-  function radio(name) { var r = document.querySelector('input[name=' + name + ']:checked'); return r ? r.value : null; }
+  document.addEventListener('change', function (ev) {
+    var t = ev.target;
+    if (t.name === 'goalTeam' || t.name === 'cardTeam' || t.name === 'subTeam' || t.id === 'goalOwn') refreshSelects();
+    if (t.tagName === 'SELECT') toggleOther(t);
+    if (t.type === 'file' && t.dataset.slot) uploadImage(t);
+  });
 
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest('button'); if (!b) return;
     if (b.dataset.a) {
+      if (b.dataset.a === 'finish' && S && S.pens.active && !S.pens.decided && !confirm('A disputa de pênaltis ainda não foi decidida. Encerrar mesmo assim?')) return;
       if (b.dataset.confirm && !confirm(b.dataset.confirm)) return;
       act({ action: b.dataset.a }, 'Feito!').catch(function () {});
     }
+    if (b.dataset.delimg && confirm('Remover esta imagem?')) act({ action: 'delete_image', slot: b.dataset.delimg }, 'Imagem removida.').catch(function () {});
+    if (b.dataset.delc) act({ action: 'delete_comment', id: Number(b.dataset.delc) }, 'Comentário apagado.').catch(function () {});
     if (b.dataset.del && confirm('Apagar este lance?')) act({ action: 'delete_event', id: Number(b.dataset.del) }, 'Lance apagado.').catch(function () {});
   });
 
@@ -225,32 +436,154 @@
   $('key').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
 
   $('btnGoal').onclick = function () {
-    act({ action: 'goal', team: radio('goalTeam'), player: $('goalPlayer').value, ownGoal: $('goalOwn').checked }, 'Gol registrado!')
-      .then(function () { $('goalPlayer').value = ''; $('goalOwn').checked = false; }).catch(function () {});
+    act({ action: 'goal', team: radio('goalTeam'), player: pick('goalPlayer', 'goalOther'), ownGoal: $('goalOwn').checked }, 'Gol registrado!')
+      .then(function () { $('goalPlayer').value = ''; $('goalOther').value = ''; $('goalOwn').checked = false; toggleOther($('goalPlayer')); refreshSelects(); }).catch(function () {});
   };
   $('btnCard').onclick = function () {
-    act({ action: 'card', team: radio('cardTeam'), color: radio('cardColor'), player: $('cardPlayer').value }, 'Cartão registrado!')
-      .then(function () { $('cardPlayer').value = ''; }).catch(function () {});
+    act({ action: 'card', team: radio('cardTeam'), color: radio('cardColor'), player: pick('cardPlayer', 'cardOther') }, 'Cartão registrado!')
+      .then(function () { $('cardPlayer').value = ''; $('cardOther').value = ''; toggleOther($('cardPlayer')); }).catch(function () {});
   };
-  $('btnNote').onclick = function () {
-    act({ action: 'note', text: $('noteText').value }, 'Lance publicado!').then(function () { $('noteText').value = ''; }).catch(function () {});
+  $('btnPenStart').onclick = function () {
+    act({ action: 'start_penalties', first: radio('penFirst') }, 'Disputa de pênaltis iniciada!').catch(function () {});
+  };
+  function pen(result) {
+    act({ action: 'pen', result: result, player: pick('penPlayer', 'penOther') }, result === 'goal' ? 'Pênalti convertido!' : 'Pênalti perdido.')
+      .then(function () { $('penPlayer').value = ''; $('penOther').value = ''; toggleOther($('penPlayer')); }).catch(function () {});
+  }
+  $('btnPenGoal').onclick = function () { pen('goal'); };
+  $('btnPenMiss').onclick = function () { pen('miss'); };
+  $('btnPenCancel').onclick = function () { if (confirm('Cancelar a disputa de pênaltis?')) act({ action: 'cancel_penalties' }, 'Disputa cancelada.').catch(function () {}); };
+  $('btnSub').onclick = function () {
+    act({ action: 'sub', team: radio('subTeam'), outName: $('subOut').value, inName: $('subIn').value }, 'Substituição registrada!').catch(function () {});
+  };
+  $('btnCmToggle').onclick = function () {
+    act({ action: 'comments_open', open: this.dataset.open !== '1' }, 'Feito!').catch(function () {});
   };
   $('btnSetup').onclick = function () {
-    act({ action: 'setup', homeName: $('cfgHome').value, awayName: $('cfgAway').value, venue: $('cfgVenue').value, halfLengthMin: $('cfgHalf').value }, 'Configuração salva!').catch(function () {});
+    act({ action: 'setup', homeName: $('cfgHome').value, awayName: $('cfgAway').value, venue: $('cfgVenue').value,
+      halfLengthMin: $('cfgHalf').value, extraLengthMin: $('cfgExtra').value, streamUrl: $('cfgStream').value, matchDate: $('cfgDate').value, matchTime: $('cfgTime').value,
+      sponsorName: $('cfgSp').value, sponsorTagline: $('cfgSpTag').value }, 'Configuração salva!').catch(function () {});
   };
+  $('btnLuHome').onclick = function () { act({ action: 'lineup', team: 'home', starters: $('luHomeS').value, bench: $('luHomeB').value }, 'Escalação salva!').catch(function () {}); };
+  $('btnLuAway').onclick = function () { act({ action: 'lineup', team: 'away', starters: $('luAwayS').value, bench: $('luAwayB').value }, 'Escalação salva!').catch(function () {}); };
   $('btnAdj').onclick = function () {
     act({ action: 'adjust_clock', minutes: $('adjMin').value, seconds: $('adjSec').value || 0 }, 'Relógio ajustado.').catch(function () {});
   };
   $('btnReset').onclick = function () {
-    if (confirm('Isso apaga placar e todos os lances. Tem certeza?')) act({ action: 'reset' }, 'Partida reiniciada.').catch(function () {});
+    var w = prompt('Isso apaga placar, lances e comentários.\n\nPara confirmar, digite a palavra REINICIAR:');
+    if (w === null) return;
+    if (w.trim() !== 'REINICIAR') { toast('Cancelado: a palavra não confere.', false); return; }
+    act({ action: 'reset', confirm: 'REINICIAR' }, 'Partida reiniciada.').catch(function () {});
   };
   $('btnLogout').onclick = function () { try { localStorage.removeItem('finalAdminKey'); } catch (e) {} KEY = ''; location.reload(); };
+
+  // ---------- imagens
+  var SLOTS = [
+    { k: 'homeCrest', lb: 'Escudo — ', t: 'home', max: 320, jpg: false },
+    { k: 'awayCrest', lb: 'Escudo — ', t: 'away', max: 320, jpg: false },
+    { k: 'homeSquad', lb: 'Foto do elenco — ', t: 'home', max: 1200, jpg: true },
+    { k: 'awaySquad', lb: 'Foto do elenco — ', t: 'away', max: 1200, jpg: true },
+    { k: 'sponsorLogo', lb: 'Logo do patrocinador', t: null, max: 480, jpg: false }
+  ];
+  var imgSig = '';
+  function renderImages() {
+    var sig = JSON.stringify(S.images) + S.teams.home + S.teams.away;
+    if (sig === imgSig) return; imgSig = sig;
+    $('imgs').innerHTML = SLOTS.map(function (x) {
+      var url = S.images[x.k];
+      return '<div class="imgrow">' + (url ? '<img class="th" src="' + url + '" alt="">' : '<div class="th"></div>') +
+        '<div class="lb">' + esc(x.lb + (x.t ? S.teams[x.t] : '')) + '</div>' +
+        '<input type="file" accept="image/*" data-slot="' + x.k + '">' +
+        (url ? '<button class="sec sm" data-delimg="' + x.k + '">Remover</button>' : '') + '</div>';
+    }).join('');
+  }
+  function resizeImage(file, max, asJpeg) {
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(file), im = new Image();
+      im.onload = function () {
+        var r = Math.min(1, max / im.width, max / im.height), w = Math.max(1, Math.round(im.width * r)), h = Math.max(1, Math.round(im.height * r));
+        var c = document.createElement('canvas'); c.width = w; c.height = h; var x = c.getContext('2d');
+        if (asJpeg) { x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); }
+        x.drawImage(im, 0, 0, w, h); URL.revokeObjectURL(url);
+        var out = c.toDataURL(asJpeg ? 'image/jpeg' : 'image/png', 0.85);
+        if (!asJpeg && out.length > 1300000) { x.globalCompositeOperation = 'destination-over'; x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); out = c.toDataURL('image/jpeg', 0.85); }
+        res(out);
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); rej(new Error('Não foi possível ler essa imagem.')); };
+      im.src = url;
+    });
+  }
+  function uploadImage(inp) {
+    var f = inp.files[0]; if (!f) return;
+    var cfg = SLOTS.filter(function (x) { return x.k === inp.dataset.slot; })[0];
+    toast('Enviando imagem…', true);
+    resizeImage(f, cfg.max, cfg.jpg).then(function (du) {
+      return fetch('/api/final/upload', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-final-admin-key': KEY }, body: JSON.stringify({ slot: cfg.k, dataUrl: du }) });
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.ok) throw new Error(j.error || 'Erro ao enviar.'); toast('Imagem salva!', true); apply(j.state);
+    }).catch(function (e) { toast(e.message, false); });
+    inp.value = '';
+  }
+
+  // ---------- backup
+  var LB = 'velhobolBackup', bkT = null;
+  function scheduleBackup() { clearTimeout(bkT); bkT = setTimeout(saveLocalBackup, 2000); }
+  function saveLocalBackup() {
+    if (!S || !KEY || (S.status === 'pre' && !S.events.length)) return;
+    fetch('/api/final/backup?images=0', { headers: { 'x-final-admin-key': KEY } }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j && j.format) { try { localStorage.setItem(LB, JSON.stringify(j)); localInfo(); } catch (e) {} }
+    }).catch(function () {});
+  }
+  function localInfo() {
+    try {
+      var raw = localStorage.getItem(LB); if (!raw) { $('localInfo').textContent = 'Ainda não há cópia automática neste aparelho.'; return; }
+      var j = JSON.parse(raw); $('localInfo').textContent = 'Última cópia automática neste aparelho: há ' + Math.round((Date.now() - j.savedAt) / 60000) + ' min.';
+    } catch (e) {}
+  }
+  function restore(obj) {
+    return fetch('/api/final/restore', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-final-admin-key': KEY }, body: JSON.stringify(obj) })
+      .then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error(j.error || 'Erro'); toast('Jogo restaurado!', true); apply(j.state); });
+  }
+  function checkRestoreBanner() {
+    var b = $('restoreBanner');
+    try {
+      var raw = localStorage.getItem(LB); if (!raw || !S) { b.classList.add('hide'); return; }
+      var j = JSON.parse(raw), st = j.state, fresh = S.status === 'pre' && !S.events.length && !S.comments.length;
+      var had = st && (st.status !== 'pre' || st.events.length), recent = Date.now() - j.savedAt < 12 * 3600e3;
+      if (fresh && had && recent) {
+        var gh = st.events.filter(function (e) { return e.type === 'goal' && e.team === 'home'; }).length, ga = st.events.filter(function (e) { return e.type === 'goal' && e.team === 'away'; }).length;
+        $('restoreMsg').textContent = 'O servidor parece ter reiniciado e o jogo não está mais aqui. Este aparelho guardou uma cópia de ' + Math.round((Date.now() - j.savedAt) / 60000) + ' min atrás: ' + st.teams.home + ' ' + gh + ' x ' + ga + ' ' + st.teams.away + ' (' + st.events.length + ' lances). O relógio continua contando; ajuste em "Ajustes de emergência" se precisar.';
+        b.classList.remove('hide');
+      } else b.classList.add('hide');
+    } catch (e) { b.classList.add('hide'); }
+  }
+  $('btnRestoreLocal').onclick = function () {
+    try { restore(JSON.parse(localStorage.getItem(LB))).catch(function (e) { toast(e.message, false); }); } catch (e) { toast('Cópia inválida.', false); }
+  };
+  $('btnBackup').onclick = function () {
+    fetch('/api/final/backup', { headers: { 'x-final-admin-key': KEY } }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.format) throw new Error(j.error || 'Erro ao gerar backup.');
+      var d = new Date(), a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(j)], { type: 'application/json' }));
+      a.download = 'velhobol-backup-' + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + '.json';
+      document.body.appendChild(a); a.click(); a.remove(); toast('Backup baixado!', true);
+    }).catch(function (e) { toast(e.message, false); });
+  };
+  $('fileRestore').addEventListener('change', function () {
+    var f = this.files[0]; if (!f) return; var inp = this;
+    f.text().then(function (t) {
+      if (!confirm('Restaurar este backup? O jogo atual será substituído.')) return;
+      return restore(JSON.parse(t));
+    }).catch(function (e) { toast(e.message || 'Arquivo inválido.', false); }).then(function () { inp.value = ''; });
+  });
 
   function start() {
     if (socket) return;
     socket = io(); // sem role "viewer": o painel não conta como espectador
     socket.on('state', apply);
     setInterval(renderClock, 500);
+    setInterval(saveLocalBackup, 20000);
+    localInfo();
   }
 
   if (KEY) { api({ action: 'ping' }).then(function () { showPanel(); start(); }).catch(function () { showLogin(); }); }

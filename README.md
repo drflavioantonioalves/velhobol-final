@@ -28,6 +28,22 @@ FINAL_ADMIN_KEY=minha-chave npm start
 - Teste tudo no painel e clique em **Reiniciar partida** antes de abrir ao público (isso mantém times e campo).
 - Teste automático: `npm test`.
 
+## Páginas
+- `/` página pública (placar, vídeo, lances, escalações, comentários) · `/admin` painel · `/telao` telão para projetar · `/relatorio` relatório da partida (+ `/relatorio.pdf`) · `/qr.svg` QR Code do site
+
 ## Como operar o jogo
-Configuração → Iniciar 1º tempo → (gols/cartões/lances) → Intervalo → Iniciar 2º tempo → Encerrar.
-Errou um gol/cartão? Use **Apagar** na lista de lances; o placar se corrige sozinho.
+1. **Antes:** no painel, em *Configuração* (times, data, horário, campo, duração dos tempos, link do YouTube, patrocinador), *Escalações* (um jogador por linha, ex.: `10 João Silva`) e *Fotos e logos* (escudos, foto do elenco, logo do patrocinador).
+2. **Jogo:** Iniciar 1º tempo → gols, cartões (amarelo/azul/vermelho) e substituições escolhendo o jogador **na lista** → Intervalo → Iniciar 2º tempo → Encerrar. Cada botão pede confirmação.
+3. **Apertou sem querer?** `↩ Desfazer` desfaz a última mudança de fase (só enquanto não houve lances depois dela).
+4. **Se empatar:** *Prorrogação* (2 tempos, duração configurável) e/ou *Disputa de pênaltis* (5 cobranças, fim antecipado e morte súbita automáticos). O campeão aparece na página.
+5. **Errou um lance?** **Apagar** na lista; placar e escalação se corrigem sozinhos.
+6. **Comentário ofensivo?** Há filtro automático de palavrões; ainda assim use **Apagar** ou **Fechar comentários**.
+7. **Fim de jogo:** abra o relatório (página, PDF e imagem para redes) e baixe o backup completo.
+8. **Reiniciar partida** exige digitar `REINICIAR` (mantém times, escalações, imagens, data e patrocinador; apaga placar, lances e comentários). Faça isso após os testes.
+
+## Segurança do jogo (backup)
+- O painel guarda sozinho uma cópia do jogo no aparelho a cada 20 s. Se o servidor reiniciar, aparece o aviso **"O jogo parece ter sumido"** com botão para restaurar.
+- Também há *Backup e restauração* manual (arquivo `.json`, com imagens).
+
+## Teste automático
+`npm test` (sobe o servidor e percorre jogo, prorrogação, pênaltis, imagens, backup, relatório e PDF).

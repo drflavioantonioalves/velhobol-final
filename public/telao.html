@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Velhobol — Telão</title>
+<link rel="icon" href="/logo.png">
+<style>
+  :root { --bg:#070d1f; --card:#101b3b; --line:#22336a; --txt:#f4f6fb; --mut:#94a1c6; --red:#e11d2e; --green:#22c55e; --yellow:#facc15; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; margin:0; }
+  body { background:radial-gradient(1400px 600px at 50% -200px,#1b3282 0,var(--bg) 62%) no-repeat,var(--bg); color:var(--txt); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; overflow:hidden; }
+  .scr { height:100%; display:grid; grid-template-rows:auto 1fr auto; padding:2.2vh 3vw; gap:2vh; }
+  .top { display:flex; align-items:center; justify-content:space-between; }
+  .brand { display:flex; align-items:center; gap:1.4vw; }
+  .brand img { height:9vh; width:9vh; border-radius:50%; background:#fff; padding:.4vh; }
+  .brand b { font-size:5.2vh; letter-spacing:.3vh; } .brand b span { color:var(--red); }
+  .brand small { display:block; color:var(--mut); font-size:2.2vh; letter-spacing:.3vh; text-transform:uppercase; }
+  .live { font-weight:800; font-size:2.6vh; letter-spacing:.3vh; padding:1vh 2vw; border-radius:99px; background:#3a0d14; color:#ff8a94; }
+  .live.off { background:#1a2650; color:var(--mut); }
+  .mid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr); align-items:center; gap:2vw; min-height:0; overflow:hidden; }
+  .tm { text-align:center; min-width:0; }
+  .badge { width:19vh; height:19vh; border-radius:50%; margin:0 auto 1.6vh; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:7.5vh; color:#fff; border:.6vh solid #ffffff30; box-shadow:0 1vh 4vh #0008; }
+  .tm b { display:block; font-size:4.4vh; line-height:1.15; overflow-wrap:break-word; }
+  .center { text-align:center; }
+  .score { font-size:min(22vh,10.5vw); font-weight:800; line-height:.9; white-space:nowrap; letter-spacing:.5vh; }
+  .score.pulse { animation:pulse 1s; } @keyframes pulse { 30% { transform:scale(1.15); color:var(--green); } }
+  .clock { font-size:7.5vh; font-weight:700; margin-top:1.4vh; font-variant-numeric:tabular-nums; } .clock small { font-size:4vh; color:var(--yellow); }
+  .pill { display:inline-block; margin-top:1vh; font-size:3vh; font-weight:800; letter-spacing:.2vh; text-transform:uppercase; padding:.8vh 2.4vw; border-radius:99px; background:#0e3a22; color:#4ade80; }
+  .pill.pre { background:#1b2c66; color:#9db4ff; } .pill.halftime, .pill.extrabreak { background:#3d3410; color:var(--yellow); } .pill.finished { background:#3d1d14; color:#fdba74; } .pill.penalties { background:#3b1d5e; color:#d8b4fe; }
+  .pens { margin-top:1.4vh; font-size:4.4vh; font-weight:700; color:#d8b4fe; }
+  .champ { margin-top:1.6vh; padding:1.2vh 1.2vw; border-radius:2vh; background:linear-gradient(90deg,#92400e,#fbbf24,#92400e); color:#2b1700; font-weight:800; font-size:3.8vh; overflow-wrap:break-word; text-transform:uppercase; display:none; }
+  .bot { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,2fr) auto; grid-template-rows:100%; gap:2vw; height:25vh; }
+  .box { background:var(--card); border:1px solid var(--line); border-radius:2vh; padding:1.6vh 1.6vw; min-width:0; overflow:hidden; }
+  .box h4 { margin:0 0 .8vh; font-size:2vh; color:var(--mut); text-transform:uppercase; letter-spacing:.25vh; }
+  .last { font-size:3.2vh; font-weight:700; line-height:1.2; } .last small { display:block; color:var(--mut); font-size:2.3vh; font-weight:500; margin-top:.4vh; }
+  .cm { font-size:2.8vh; padding:.5vh 0; border-top:1px solid #ffffff12; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .cm:first-of-type { border-top:0; } .cm b { color:#8fb0ff; }
+  .qr { text-align:center; } .qr img { height:15.5vh; width:15.5vh; border-radius:1vh; background:#fff; display:block; margin:0 auto .6vh; } .qr small { font-size:1.9vh; color:var(--mut); }
+  .sp { font-size:2.4vh; color:var(--mut); margin-top:.6vh; } .sp b { color:#fff; } .sp img { height:5vh; vertical-align:middle; margin-left:.8vw; }
+</style>
+</head>
+<body>
+<div class="scr">
+  <div class="top">
+    <div class="brand"><img src="/logo.png" alt=""><div><b>VELHO<span>BOL</span></b><small id="when">Final do campeonato</small></div></div>
+    <div class="live off" id="live">EM BREVE</div>
+  </div>
+
+  <div class="mid">
+    <div class="tm"><div class="badge" id="bh"></div><b id="nh">—</b></div>
+    <div class="center">
+      <div class="score" id="score">0 x 0</div>
+      <div class="clock" id="clock">00:00</div>
+      <div class="pill pre" id="status">Pré-jogo</div>
+      <div class="pens" id="pens"></div>
+      <div class="champ" id="champ"></div>
+    </div>
+    <div class="tm"><div class="badge" id="ba"></div><b id="na">—</b></div>
+  </div>
+
+  <div class="bot">
+    <div class="box"><h4>Último lance</h4><div class="last" id="last">Aguardando o início…</div><div class="sp" id="sp"></div></div>
+    <div class="box"><h4>Torcida comenta</h4><div id="cms"></div></div>
+    <div class="box qr"><img src="/qr.svg" alt="QR Code"><small id="host">Aponte a câmera</small></div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var S = null, receivedAt = 0, lastScore = '';
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function mmss(t) { return pad(Math.floor(t / 60)) + ':' + pad(t % 60); }
+  function who(n, name) { return (n ? n + ' · ' : '') + name; }
+  function badge(el, name, url) {
+    if (url) { el.textContent = ''; el.style.background = '#fff url("' + url + '") center/78% no-repeat'; return; }
+    var w = name.trim().split(/\s+/), ini = (w[0][0] || '?') + (w.length > 1 ? w[1][0] : ''), h = 0;
+    for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % 360;
+    el.textContent = ini.toUpperCase(); el.style.background = 'linear-gradient(135deg,hsl(' + h + ',70%,45%),hsl(' + ((h + 40) % 360) + ',70%,30%))';
+  }
+  function limit(s) {
+    var hl = s.halfLengthMin * 60, ex = s.extraLengthMin * 60;
+    return { first: hl, second: 2 * hl, extra1: 2 * hl + ex, extra2: 2 * hl + 2 * ex }[s.status] || 0;
+  }
+  function seconds() { if (!S) return 0; var t = S.clock.seconds; if (S.clock.running) t += Math.floor((Date.now() - receivedAt) / 1000); return t; }
+  function renderClock() {
+    if (!S) return; var t = seconds(), lim = limit(S), h = mmss(t);
+    if (lim && t > lim) h = mmss(lim) + ' <small>+' + mmss(t - lim) + '</small>';
+    $('clock').innerHTML = h;
+  }
+  function lastEvent(s) {
+    var evs = s.events.filter(function (e) { return e.type !== 'status' || true; }); if (!evs.length) return 'Aguardando o início…';
+    var e = evs[evs.length - 1], t = e.team ? esc(s.teams[e.team]) : '', p = e.player ? esc(who(e.num, e.player)) : '';
+    if (e.type === 'goal') return '⚽ GOL! ' + t + '<small>' + (e.ownGoal ? 'Gol contra ' : '') + p + ' · ' + e.minute + "'</small>";
+    if (e.type === 'card') return 'Cartão ' + e.color + ' · ' + t + '<small>' + p + ' · ' + e.minute + "'</small>";
+    if (e.type === 'sub') return '🔄 Substituição · ' + t + '<small>▲ ' + esc(who(e.inNum, e.inName)) + '   ▼ ' + esc(who(e.outNum, e.outName)) + '</small>';
+    if (e.type === 'pen') return (e.result === 'goal' ? '⚽ Pênalti convertido' : '❌ Pênalti perdido') + ' · ' + t + '<small>' + p + '</small>';
+    return esc(e.text);
+  }
+  function render() {
+    var s = S;
+    $('nh').textContent = s.teams.home; $('na').textContent = s.teams.away;
+    badge($('bh'), s.teams.home, s.images.homeCrest); badge($('ba'), s.teams.away, s.images.awayCrest);
+    var sc = s.score.home + ' x ' + s.score.away; $('score').textContent = sc;
+    if (lastScore && lastScore !== sc) { var el = $('score'); el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); }
+    lastScore = sc;
+    $('status').textContent = s.statusLabel; $('status').className = 'pill ' + s.status;
+    var playing = ['first', 'second', 'extra1', 'extra2', 'penalties'].indexOf(s.status) !== -1;
+    $('live').className = 'live' + (playing ? '' : ' off'); $('live').textContent = playing ? 'AO VIVO' : (s.status === 'finished' ? 'ENCERRADO' : (s.status === 'pre' ? 'EM BREVE' : 'INTERVALO'));
+    $('pens').textContent = s.pens.active ? 'Pênaltis: ' + s.pens.score.home + ' x ' + s.pens.score.away : '';
+    var ch = $('champ'); if (s.status === 'finished' && s.winner) { ch.style.display = 'block'; ch.textContent = '🏆 Campeão: ' + s.teams[s.winner]; } else ch.style.display = 'none';
+    $('last').innerHTML = lastEvent(s);
+    var cm = s.comments.slice(-4).reverse();
+    $('cms').innerHTML = cm.length ? cm.map(function (c) { return '<div class="cm"><b>' + esc(c.name) + ':</b> ' + esc(c.text) + '</div>'; }).join('') : '<div class="cm" style="color:var(--mut)">Comente pelo celular!</div>';
+    var sp = s.sponsor || {}, logo = s.images.sponsorLogo;
+    $('sp').innerHTML = (sp.name || logo) ? 'Patrocinador da rodada: ' + (logo ? '<img src="' + logo + '" alt="">' : '<b>' + esc(sp.name) + '</b>') : '';
+    if (s.matchDate) { var p = s.matchDate.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2]); var w = d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }); $('when').textContent = 'Final · ' + w.charAt(0).toUpperCase() + w.slice(1) + (s.matchTime ? ' · ' + s.matchTime : ''); }
+    $('host').textContent = 'Acompanhe: ' + location.host; renderClock();
+  }
+  var socket = io();
+  socket.on('state', function (st) { S = st; receivedAt = Date.now(); render(); });
+  socket.on('comment', function (c) { if (!S) return; S.comments.push(c); render(); });
+  setInterval(renderClock, 500);
+})();
+</script>
+</body>
+</html>
